@@ -12,8 +12,6 @@ def valid_crop_resize(data_numpy,valid_frame_num,p_interval,window):
     begin = 0
     end = valid_frame_num
     valid_size = end - begin
-    if valid_size == 0:
-        valid_size = 300
     #crop
     if len(p_interval) == 1:
         p = p_interval[0]
