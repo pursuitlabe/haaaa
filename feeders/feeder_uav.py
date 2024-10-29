@@ -88,6 +88,18 @@ class Feeder(Dataset):
         label = self.label[index]
         data_numpy = np.array(data_numpy)
         valid_frame_num = 300
+        if self.split == 'train':
+            if valid_frame_num == 0:
+                data_numpy = np.array(self.data[index - 1])
+                label = self.label[index - 1]
+                valid_frame_num = np.sum(data_numpy.sum(0).sum(-1).sum(-1) != 0)
+        if self.split == 'train':
+            flag = 0
+            for i in range(300):
+                if np.sum(data_numpy[:,i]) != 0:
+                    flag = i
+                else:
+                    data_numpy[:,i] = data_numpy[:,flag]
         data_numpy = tools.valid_crop_resize(data_numpy, valid_frame_num, self.p_interval, self.window_size)
         # reshape Tx(MVC) to CTVM
         if self.random_rot:
